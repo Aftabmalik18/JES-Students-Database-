@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Powered by NEXORA</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+        }
+
+        select {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            width: 80%;
+            color: #afafaf;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        select:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .scrollable {
+            overflow: auto;
+            max-height: 70vh;
+            max-width: 100%;
+            margin: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        td {
+            font-size: 0.9rem;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container, .scrollable {
+            animation: fadeIn 1s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            select {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JES Students Database</h1>
+        <select id="classSelect" onchange="updateTable()">
+            <option value="">Select a Class</option>
+            <option value="1">Class 1</option>
+            <option value="2">Class 2</option>
+            <option value="3">Class 3</option>
+            <option value="4">Class 4</option>
+            <option value="5">Class 5</option>
+            <option value="6">Class 6</option>
+            <option value="7">Class 7</option>
+            <option value="8">Class 8</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+        </select>
+        <div class="scrollable">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>DOB</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>Transport</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTable"></tbody>
+            </table>
+        </div>
+    </div>
+    <footer>Developed by <b>Aftab Malik</b></footer>
+
+    <script>
+        const students = {
+            1: ["Student A1", "Student B1", "Student C1", "Student D1"],
+            2: ["Student A2", "Student B2", "Student C2", "Student D2"],
+            3: [
+        "Abhiraj Prashant Suryawanshi",
+"Abila Habib Khan",
+"Ahemad Ali Mohammad Altaf Lulaniya",
+"Ajinkya Rahul Jondhale",
+"Akshara Arjun Gangthare",
+"Anurag Ashish Jondhale",
+"Anvaya Kapil Shiradkar",
+"Anzar Mohammad Amjad Shaikh",
+"Arav Arvind Gajbhar",
+"Arav Sudhakar Jamdade",
+"Arnesh Dinesh Bharne",
+"Arohi Kailas Khandare",
+"Avishakar Ajay Katke",
+"Ayesha Zafar Khan",
+"Ayush Govind Badad",
+"Dishanya Sandeep Jondhale",
+"Haziq Majid Shaikh",
+"Kunal Siddharth Ghodke",
+"Marya Maryam Sk. Sameer Hussain",
+"Nandini Kailash Harale",
+"Priyal Rajesh Manwate",
+"Rajnandini Vishal Awachar",
+"Ritesh Devidas Latpate",
+"Rutvij Pradeep Sugandhe",
+"Samrat Manoj Kamble",
+"Sejal Satish More",
+"Shareque Khan Ajmal Khan",
+"Shravani Sukdhadey Dhongde",
+"Shreyash Vishwanath Ambhure",
+"Shrusti Hanmant Sasane",
+"Snehal Sanjay Suryawanshi",
+"Somya Amol Dhadve",
+"Syed Affan Syed Asef",
+"Vivan Amol Panditkar"
+
+        // Add more students for Class 3
+    ],
+    4: [
+        "Aaroh Mahesh Rode",
+"Abdul Rehman Abdul Aziz",
+"Abdulla Akhil Ahmed",
+"Aditi Rajesh Gaikwad",
+"Ajinkya Milind Ghusale",
+"Anushka Ashok Ranveer",
+"Arhant Tushar Awasarmal",
+"Arvind Gulabrao Sawant",
+"Ashita Arvind Gajbhar",
+"Ayush Dilip Malsaminder",
+"Bouddhik Rajratan Shiradkar",
+"Muhammad Hashir Abdulla",
+"Pranav Umesh Sonawane",
+"Prasenjeet Ganesh Ubale",
+"Pratap Prakash Walke",
+"Pratik Pramod Munde",
+"Pruthviraj Punjaji Parve",
+"Rashi Kailash Ubale",
+"Rutuja Tushar Narwade",
+"Sakshi Dulbaji Suryawanshi",
+"Sandisha Siddharth Sawant",
+"Shweta Harishchandra Waghmare",
+"Siddharth Milind Pradhan",
+"Swara Sanjeev Jadhav",
+"Swara Tulshiram Kashinde",
+"Syed Ibrahim Syed Ather",
+"Syed Maaz Syed Imran",
+"Syed Muzammil Asif Inamder",
+"Syed Taha Syed Jameel Ahmed Hashmi",
+"Tanishka Gajanan Waghmare",
+"Vedant Nitin Ingole",
+"Viraj Arvind Vitthalkar"
+        // Add more students for Class 4
+    ],
+    5: [
+       "Aarohi Subhash Dhabale",
+"Adiyan Amjad Khan",
+"Anas Mohasin Shaikh",
+"Aryan Rahul Vairat",
+"Bankar Kranti Vitthal",
+"Darsh Prasanna Kate",
+"Dhairya Rupesh Wahule",
+"Dipke Sarthak Rajaram",
+"Hanwate Utkarsh Prasannajit",
+"Kagda Aditya Jogindarsingh",
+"Khan Alishba Habib",
+"Kurhade Dhiraj Yogeshwar",
+"Kurhade Niraj Yogeshwar",
+"Mohammad Afif Mohammad Aslam",
+"Mohammad Amanuddin Kazi",
+"Mohammad Farhanuddin Kazi",
+"Mundhe Ansh Aniket",
+"Patange Swaraj Sachin",
+"Salve Aarohi Raju",
+"Salve Naman Gautam",
+"Sanchi Ganesh Kharat",
+"Shaikh Amaan Shaikh Zahed",
+"Shaikh Iram",
+"Shaikh Zara Fatema Shaikh Hameed",
+"Shravani Shankar Shinde",
+"Swara Ganesh Kharat",
+"Tak Ishita Rahul",
+"Tareq Khan Ajmal Khan Pathan",
+"Zainab Sarwari"
+        // Add more students for Class 5
+    ],
+    6: [
+       "Abdul Nafey Abdul Tahseen",
+"Akib Moin Altaf Lulaniya",
+"Alane Sharvari Vivek",
+"Balkhande Tanvi Sanghratna",
+"Bendre Siddhi Sunil",
+"Boghani Sakina Fatima",
+"Chate Atharva Venkatrao",
+"Dhaware Harshdeep Sujit",
+"Farooqui Mohammad Danishoddin",
+"Jogdand Pranjal Sanghpal",
+"Jondhale Chaitanya Rahul",
+"Khandare Aryan Kailas",
+"Khandare Iccha Ramakant",
+"Kolhe Kartavya Kiran",
+"Kulkarni Minakshi Venkatesh",
+"Kute Sharvari Nitin",
+"Landge Samradyani Nilesh",
+"Maaz Khan Gaus Khan",
+"Madiha Fatema Syed Asif",
+"Mahamuni Shivam Vishwanath",
+"Manwate Yuvraj Rajesh",
+"Mirza Shehzan Baig",
+"Mohammad Uzair Siddiqui",
+"Paikrao Pushpwardhan Deepak",
+"Pawan Ankush Tikhe",
+"Raut Nimay Dindayal",
+"Sasane Nagarjun Hanumant",
+"Sayyad Abdul Malik",
+"Shaikh Asjad Shaikh Amjad",
+"Shaikh Mohammad Muzammil",
+"Shreyas Sandip Khade",
+"Soham Nitin Suradkar",
+"Suryawanishi Anushka Prashant",
+"Waghmare Pranjal Santukumar",
+"Wakle Rishabh Wakle",
+"Zain Ahmed Khan"
+        // Add more students for Class 6
+    ],
+    7: [
+     "Abdul Malik Abdul Aziz",
+"Bankar Pawan Vitthal",
+"Bharade Kalyani Milind",
+"Farooqui Khansa Md Sarfarzuddin",
+"Gaikwad Chaitanya Balasaheb",
+"Ghodke Anikita Shivaji",
+"Kalyani Ashok Shinde",
+"Maske Sanchi Arun",
+"Mohammad Saadaan Md. Zabi Ur Rehman",
+"Narwade Kshitija Mangesh",
+"Narwade Rajnandini Sachin",
+"Poonam Shankar Shinde",
+"Prerana Kapil Parre",
+"Saksham Kishor Sahejrao",
+"Sayeed Shaikh Iliyas",
+"Shahane Sarthak Kiran",
+"Sushant Shantipal Sable",
+"Syed Mohammed Farjad Syed Muzaffar",
+"Syed Yazzan Syed Mujib",
+"Syeda Meraj Syed Jameel Ahmed",
+"Thorat Abhay Sachin",
+"Waghmare Gaurav Gajanan",
+"Waghmare Pranit Ashok",
+"Wakude Vaibhavi Rama"
+
+        // Add more students for Class 7
+    ],
+    8: [
+        "Aaftab Aaref Shaikh",
+"Abdul Rehman Akil Ahmed Khan",
+"Abdul Rehman Mazhar Khan",
+"Aditi Milind Ghusale",
+"Alishba Syed Anis",
+"Arnav Nagorao Dudhgonde",
+"Aryan Sopanrao Pote",
+"Atharav Sudhakar Jamdade",
+"Ayesh Humera Mir Karam Ali",
+"Harshada Harishchandra Waghmare",
+"Janhvi Amol Mahamuni",
+"Jishan Farukh Shaikh",
+"Kaab Ahmed Khan Iliyas Khan",
+"Kaustubh Kailas Surwase",
+"Kshipra Shrinivas Yannawar",
+"Mansi Rahul Vairat",
+"Mirza Faizan Baig",
+"Mohammad Rayyan Sajed Qureshi",
+"Nidhi Prasanna Kate",
+"Prabodhini Siddharth Kokate",
+"Pranav Omprakash Dahale",
+"Riddhi Kerba Gaikwad",
+"Rishabh Rajesh Sharma",
+"Ritesh Chandrakant Bharade",
+"Ritika Anil Hattiambire",
+"Sambodhi Siddharth Raut",
+"Samruddhi Kishor Dhoble",
+"Sanchi Sanghratna Balkhande",
+"Sayli Sanjay Surywanshi",
+"Shaikh Rehan Shaikh Jawed",
+"Shourya Shantanu Methekar",
+"Siddhant Sambhaji Thorat",
+"Siddharth Prakash Ranvir",
+"Tanmay Rajkumar Mujmule",
+"Tarequoddin Yousufoddin Mohammad"],
+            9: ["Student A9", "Student B9", "Student C9", "Student D9"],
+            10: ["Student A10", "Student B10", "Student C10", "Student D10"]
+        };
+
+        function updateTable() {
+            const classSelect = document.getElementById('classSelect');
+            const selectedClass = classSelect.value;
+            const studentTable = document.getElementById('studentTable');
+
+            studentTable.innerHTML = ""; // Clear previous table rows
+
+            if (students[selectedClass]) {
+                students[selectedClass].forEach((student, index) => {
+                    const row = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>ID${selectedClass}${index + 1}</td>
+                            <td>${student}</td>
+                            <td>${2005 + parseInt(selectedClass)}-01-${(index + 1).toString().padStart(2, '0')}</td>
+                            <td>+91-12345678${index}</td>
+                            <td>Address Line ${index + 1}</td>
+                            <td>Bus Route ${index + 1}</td>
+                        </tr>
+                    `;
+                    studentTable.innerHTML += row;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
